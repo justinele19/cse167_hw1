@@ -14,8 +14,9 @@ void compute_main(uint2 tid : SV_DispatchThreadID,
     image[tid] = float4(0.5, 0.5, 0.5, 1.0);
     // TODO: your code here
 
-     float2 p = float2(tid.x + 0.5, height - (tid.y + 0.5));  // find pixel center
-     if (length(p - center) <= radius) {
-        image[tid] = float4(color, 1.0);
-     }
+    float2 p = float2(tid.x + 0.5, height - (tid.y + 0.5));  // find pixel center
+    if (length(p - center) <= radius) // check if the pixel is within the radius 
+    {
+        image[tid] = float4(color, 1.0);  // fill pixel w/ circle color 
+    }
 }
