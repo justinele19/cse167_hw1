@@ -67,7 +67,7 @@ void compute_main(uint2 tid : SV_DispatchThreadID,
             }  
         }
 
-        // curves
+        // round joints
         int first = is_closed ? 0 : 1;
         int last = is_closed ? num_polyline : num_polyline - 1;
         for (int i = first; i < last && !on_stroke; i++) {

@@ -53,7 +53,7 @@ bool on_polyline_stroke(StructuredBuffer<float2> points, int begin, int end,
             }  
     }
 
-    // curves
+    // round joints
     int first = closed ? 0 : 1;
     int last = closed ? n : n - 1;
     for (int i = first; i < last; i++) {
