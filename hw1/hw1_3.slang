@@ -64,8 +64,6 @@ bool on_polyline_stroke(StructuredBuffer<float2> points, int begin, int end,
     return false; 
 }
 
-
-
 [shader("compute")]
 [numthreads(8, 8, 1)]
 void compute_main(uint2 tid : SV_DispatchThreadID,

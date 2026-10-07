@@ -190,13 +190,64 @@ def compose_transformation(transforms):
     F = np.eye(3, dtype=np.float32)
 
     for transform in transforms:
-        pass
         # TODO: your code here
+        M = np.eye(3, dtype=np.float32)
+        
+        if 'scale' in transform:
+            # [[sx, 0, 0], [0, sy, 0], [0, 0, 1]]
+            sx, sy = transform['scale']
+            M[0, 0] = sx
+            M[1, 1] = sy
+        elif 'rotate' in transform:
+            # [[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]]
+            # The scene gives degrees; cos/sin need radians.
+            theta = math.radians(transform['rotate'][0])
+            M[0, 0] = math.cos(theta)
+            M[0, 1] = -math.sin(theta)
+            M[1, 0] = math.sin(theta)
+            M[1, 1] = math.cos(theta)
+        elif 'translate' in transform:
+            # [[1, 0, tx], [0, 1, ty], [0, 0, 1]]
+            # The third column is what adds tx, ty to the point
+            tx, ty = transform['translate']
+            M[0, 2] = tx
+            M[1, 2] = ty
+        elif 'shear_x' in transform:
+            # [[1, lambda, 0], [0, 1, 0], [0, 0, 1]]: x' = x + lambda * y
+            M[0, 1] = transform['shear_x'][0]
+        elif 'shear_y' in transform:
+            # [[1, 0, 0], [lambda, 1, 0], [0, 0, 1]]: y' = lambda * x + y
+            M[1, 0] = transform['shear_y'][0]
 
+        F = M @ F
     return F
 
 def interpolate_transformation(transform_keyframes, t):
     # TODO: your code here
+    if t <= transform_keyframes[0]['time']:
+        return transform_keyframes[0]['transform']
+    if t >= transform_keyframes[-1]['time']:
+        return transform_keyframes[-1]['transform']
+
+    # Walk through consecutive pairs of keyframes: (k0, k1), (k1, k2), ...
+    for k0, k1 in zip(transform_keyframes, transform_keyframes[1:]):
+        t0, t1 = k0['time'], k1['time']
+
+        # Is t between these two keyframes?
+        if t0 <= t <= t1:
+            #how far from k0 to k1 we are, 0 to 1.
+            w = (t - t0) / (t1 - t0) if t1 > t0 else 0.0
+
+            # Build the in-between transform list, one entry at a time.
+            # tr0 and tr1 are matching entries
+            result = []
+            for tr0, tr1 in zip(k0['transform'], k1['transform']):
+                kind = next(iter(tr0))   
+                values = [(1 - w) * a + w * b
+                          for a, b in zip(tr0[kind], tr1[kind])]
+
+                result.append({kind: values})
+            return result
 
     # Should never happen?
     assert False
