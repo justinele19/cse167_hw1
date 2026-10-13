@@ -1,0 +1,26 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+
+# LaTeX build artifacts (handouts)
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+latex.out/
+
+# OS / editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Submission archives
+*.zip

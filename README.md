@@ -1,3 +1,11 @@
+# Homework 1 Submission
+
+## Designed scene (Section 9: Design your own scenes)
+- **Scene:** [`scenes/hw1/fish.json`](scenes/hw1/fish.json) — an animated fish scene
+- **Rendering:** [`outputs/hw_1_9.png`](outputs/hw_1_9.png)
+
+The scene is rendered with the Homework 1.8 renderer
+
 # balboa
 UCSD CSE 167 codebase
 https://cseweb.ucsd.edu/~tzli/cse167/
